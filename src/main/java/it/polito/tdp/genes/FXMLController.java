@@ -5,8 +5,13 @@
 package it.polito.tdp.genes;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.genes.model.Adiacenza;
 import it.polito.tdp.genes.model.Genes;
 import it.polito.tdp.genes.model.Model;
 import javafx.event.ActionEvent;
@@ -30,7 +35,7 @@ public class FXMLController {
     private Button btnCreaGrafo; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbGeni"
-    private ComboBox<?> cmbGeni; // Value injected by FXMLLoader
+    private ComboBox<Genes> cmbGeni; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnGeniAdiacenti"
     private Button btnGeniAdiacenti; // Value injected by FXMLLoader
@@ -46,18 +51,48 @@ public class FXMLController {
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
-    	
+    	this.model.creaGrafo();
+    	txtResult.setText("Grafo creato!\nNumero vertici: " + model.getNumeroVertici());
+		txtResult.appendText("\nNumero archi: " + model.getNumeroArchi() + "\n");
+		cmbGeni.getItems().addAll(this.model.getListaGeni());
 
     }
 
     @FXML
     void doGeniAdiacenti(ActionEvent event) {
+    	try {
+    		Genes g1 = cmbGeni.getValue();
+    		List<Adiacenza> adiacenti = new ArrayList<>(this.model.getGeniAdiacenti(g1));
+    		txtResult.appendText("Geni adiacenti a " + g1.toString() + ":\n");
+    		for(Adiacenza a : adiacenti)
+    			txtResult.appendText(a.toString() + "\n");
+    	}catch (NullPointerException e) {
+    		txtResult.appendText("Creare il grafo e selezionare un gene prima di procedere.\n");
+    		return;
+      	}
 
     	
     }
 
     @FXML
     void doSimula(ActionEvent event) {
+    	try {
+    		Genes primo = cmbGeni.getValue();
+    		int N = Integer.parseInt(txtIng.getText());
+    		this.model.simula(N, primo);
+    		Map<Genes, Integer> output = new HashMap<>(this.model.getOutput());
+    		txtResult.appendText("Simulazione completata, stato finale:\n");
+    		for(Genes g : output.keySet()) {
+    			txtResult.appendText(g.toString() + " " + output.get(g) + " ingegneri\n");
+    		}
+    		
+    	} catch (NullPointerException e) {
+    		txtResult.appendText("Creare il grafo e selezionare un gene prima di procedere.\n");
+    		return;
+      	} catch (NumberFormatException e) {
+      		txtResult.appendText("Inserire numero intero prima di procedere.\n");
+    		return;
+      	}
 
     }
 
