@@ -1,7 +1,6 @@
 package it.polito.tdp.genes.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +46,7 @@ public class Model {
 			double peso = this.grafo.getEdgeWeight(e);
 			result.add(new Adiacenza(g, peso));
 		}
-		Collections.sort(result);
+		
 		return result;
 	}
 	

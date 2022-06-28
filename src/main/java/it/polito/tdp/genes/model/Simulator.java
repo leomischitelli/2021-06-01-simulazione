@@ -72,10 +72,10 @@ public class Simulator {
 			
 			for(Adiacenza a : vicini) {
 				double probAttuale = a.getCorr() / sommaPesi; //probattuale
-				if(sommaPrecedente < prob && prob < probAttuale) {
+				if(prob < probAttuale+sommaPrecedente) { //agendo in questo modo, sommaPrec sara sempre minore di prob
 					//aggiorno lo stato
-					stato.remove(ingegnere);
-					stato.add(ingegnere, a.getGene());
+					stato.set(ingegnere, a.getGene());
+					break;
 				}
 				else {
 					sommaPrecedente+=probAttuale;

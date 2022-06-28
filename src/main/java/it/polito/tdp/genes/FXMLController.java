@@ -6,6 +6,7 @@ package it.polito.tdp.genes;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +64,7 @@ public class FXMLController {
     	try {
     		Genes g1 = cmbGeni.getValue();
     		List<Adiacenza> adiacenti = new ArrayList<>(this.model.getGeniAdiacenti(g1));
+    		Collections.sort(adiacenti);
     		txtResult.appendText("Geni adiacenti a " + g1.toString() + ":\n");
     		for(Adiacenza a : adiacenti)
     			txtResult.appendText(a.toString() + "\n");
